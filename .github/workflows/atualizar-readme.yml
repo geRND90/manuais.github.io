@@ -51,16 +51,43 @@ jobs:
               if pasta.name in ignorar:
                   continue
 
-              # Só adiciona a pasta se ela tiver um index.html dentro
-              if not (pasta / "index.html").exists():
+              # Ignora pastas ocultas
+              if pasta.name.startswith("."):
                   continue
+
+              arquivo_manual = None
+
+              # Primeiro procura index.html ou index.htm
+              for nome_arquivo in ["index.html", "index.htm"]:
+                  caminho = pasta / nome_arquivo
+                  if caminho.exists():
+                      arquivo_manual = caminho
+                      break
+
+              # Se não encontrar index, procura qualquer arquivo .html ou .htm
+              if arquivo_manual is None:
+                  arquivos_html = sorted([
+                      arquivo for arquivo in pasta.iterdir()
+                      if arquivo.is_file() and arquivo.suffix.lower() in [".html", ".htm"]
+                  ])
+
+                  if not arquivos_html:
+                      continue
+
+                  arquivo_manual = arquivos_html[0]
 
               titulo = nomes_personalizados.get(
                   pasta.name,
                   pasta.name.replace("-", " ").replace("_", " ").title()
               )
 
-              manuais.append(f"- [{titulo}](./{pasta.name}/)")
+              # Se for index.html ou index.htm, o link pode ser direto para a pasta
+              if arquivo_manual.name.lower() in ["index.html", "index.htm"]:
+                  link = f"./{pasta.name}/"
+              else:
+                  link = f"./{pasta.name}/{arquivo_manual.name}"
+
+              manuais.append(f"- [{titulo}]({link})")
 
           nova_lista = "\n".join(manuais)
 
