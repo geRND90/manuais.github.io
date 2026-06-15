@@ -1,0 +1,93 @@
+name: Atualizar README com manuais
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  atualizar-readme:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar repositório
+        uses: actions/checkout@v4
+
+      - name: Atualizar lista de manuais no README
+        run: |
+          python <<'PY'
+          from pathlib import Path
+          import re
+
+          repo = Path(".")
+          readme = repo / "README.md"
+
+          inicio = "<!-- MANUAIS:INICIO -->"
+          fim = "<!-- MANUAIS:FIM -->"
+
+          # Pastas que não devem aparecer no README
+          ignorar = {
+              ".git",
+              ".github",
+          }
+
+          # Nomes personalizados para suas pastas
+          nomes_personalizados = {
+              "integrJetcom": "Integração MeusCorreios x Jetcommerce",
+              "integrShopifyG": "Integração MeusCorreios x Shopify",
+              "meuscorreios-chatbot": "Guia de Suporte MeusCorreios Chatbot",
+          }
+
+          manuais = []
+
+          for pasta in sorted(repo.iterdir()):
+              if not pasta.is_dir():
+                  continue
+
+              if pasta.name in ignorar:
+                  continue
+
+              # Só adiciona a pasta se ela tiver um index.html dentro
+              if not (pasta / "index.html").exists():
+                  continue
+
+              titulo = nomes_personalizados.get(
+                  pasta.name,
+                  pasta.name.replace("-", " ").replace("_", " ").title()
+              )
+
+              manuais.append(f"- [{titulo}](./{pasta.name}/)")
+
+          nova_lista = "\n".join(manuais)
+
+          conteudo = readme.read_text(encoding="utf-8")
+
+          if inicio not in conteudo or fim not in conteudo:
+              raise SystemExit("Marcadores MANUAIS:INICIO e MANUAIS:FIM não encontrados no README.md")
+
+          novo_conteudo = re.sub(
+              rf"{re.escape(inicio)}.*?{re.escape(fim)}",
+              f"{inicio}\n{nova_lista}\n{fim}",
+              conteudo,
+              flags=re.S
+          )
+
+          readme.write_text(novo_conteudo, encoding="utf-8")
+          PY
+
+      - name: Salvar alteração no README
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          if git diff --quiet; then
+            echo "Nenhuma alteração no README."
+          else
+            git add README.md
+            git commit -m "Atualiza lista de manuais no README"
+            git push
+          fi
