@@ -81,6 +81,15 @@ jobs:
               parser.feed(conteudo)
               return parser.titulo()
 
+          def limpar_titulo(titulo):
+              titulo = re.sub(r"\s+", " ", titulo).strip()
+
+              # Remove tudo que vier depois de separadores como:
+              # " — ", " – " ou " - "
+              titulo = re.split(r"\s+[—–-]\s+", titulo, maxsplit=1)[0].strip()
+
+              return titulo
+
           def nome_fallback(nome_pasta):
               return nome_pasta.replace("-", " ").replace("_", " ").title()
 
@@ -138,6 +147,15 @@ jobs:
                       f"::warning file={arquivo_manual.as_posix()}::"
                       f"Arquivo sem tag <title>. Usando o nome da pasta no README: {titulo}"
                   )
+              else:
+                  titulo_original = titulo
+                  titulo = limpar_titulo(titulo)
+
+                  if titulo != titulo_original:
+                      print(
+                          f"::notice file={arquivo_manual.as_posix()}::"
+                          f"Título ajustado de '{titulo_original}' para '{titulo}'"
+                      )
 
               link = montar_link(pasta, arquivo_manual)
 
