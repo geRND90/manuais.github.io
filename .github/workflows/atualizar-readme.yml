@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
@@ -21,6 +24,9 @@ jobs:
         run: |
           python <<'PY'
           from pathlib import Path
+          from html.parser import HTMLParser
+          from html import unescape
+          from urllib.parse import quote
           import re
 
           repo = Path(".")
@@ -29,18 +35,63 @@ jobs:
           inicio = "<!-- MANUAIS:INICIO -->"
           fim = "<!-- MANUAIS:FIM -->"
 
-          # Pastas que não devem aparecer no README
           ignorar = {
               ".git",
               ".github",
           }
 
-          # Nomes personalizados para suas pastas
-          nomes_personalizados = {
-              "integrJetcom": "Integração MeusCorreios x Jetcommerce",
-              "integrShopifyG": "Integração MeusCorreios x Shopify",
-              "meuscorreios-chatbot": "Guia de Suporte MeusCorreios Chatbot",
-          }
+          class TitleParser(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.dentro_title = False
+                  self.partes = []
+
+              def handle_starttag(self, tag, attrs):
+                  if tag.lower() == "title":
+                      self.dentro_title = True
+
+              def handle_endtag(self, tag):
+                  if tag.lower() == "title":
+                      self.dentro_title = False
+
+              def handle_data(self, data):
+                  if self.dentro_title:
+                      self.partes.append(data)
+
+              def titulo(self):
+                  texto = " ".join(self.partes)
+                  texto = unescape(texto)
+                  texto = re.sub(r"\s+", " ", texto).strip()
+                  return texto if texto else None
+
+          def ler_arquivo_texto(caminho):
+              dados = caminho.read_bytes()
+
+              for encoding in ["utf-8-sig", "utf-8", "cp1252", "latin-1"]:
+                  try:
+                      return dados.decode(encoding)
+                  except UnicodeDecodeError:
+                      pass
+
+              return dados.decode("utf-8", errors="ignore")
+
+          def extrair_title(caminho):
+              conteudo = ler_arquivo_texto(caminho)
+              parser = TitleParser()
+              parser.feed(conteudo)
+              return parser.titulo()
+
+          def nome_fallback(nome_pasta):
+              return nome_pasta.replace("-", " ").replace("_", " ").title()
+
+          def montar_link(pasta, arquivo_manual):
+              nome_arquivo = arquivo_manual.name.lower()
+
+              if nome_arquivo in ["index.html", "index.htm"]:
+                  return f"./{quote(pasta.name)}/"
+
+              caminho = f"{pasta.name}/{arquivo_manual.name}"
+              return f"./{quote(caminho, safe='/')}"
 
           manuais = []
 
@@ -51,7 +102,6 @@ jobs:
               if pasta.name in ignorar:
                   continue
 
-              # Ignora pastas ocultas
               if pasta.name.startswith("."):
                   continue
 
@@ -60,41 +110,58 @@ jobs:
               # Primeiro procura index.html ou index.htm
               for nome_arquivo in ["index.html", "index.htm"]:
                   caminho = pasta / nome_arquivo
-                  if caminho.exists():
+                  if caminho.exists() and caminho.is_file():
                       arquivo_manual = caminho
                       break
 
-              # Se não encontrar index, procura qualquer arquivo .html ou .htm
+              # Se não encontrar index, procura qualquer .html ou .htm dentro da pasta
               if arquivo_manual is None:
-                  arquivos_html = sorted([
-                      arquivo for arquivo in pasta.iterdir()
-                      if arquivo.is_file() and arquivo.suffix.lower() in [".html", ".htm"]
-                  ])
+                  arquivos_html = sorted(
+                      [
+                          arquivo
+                          for arquivo in pasta.iterdir()
+                          if arquivo.is_file() and arquivo.suffix.lower() in [".html", ".htm"]
+                      ],
+                      key=lambda arquivo: arquivo.name.lower()
+                  )
 
                   if not arquivos_html:
                       continue
 
                   arquivo_manual = arquivos_html[0]
 
-              titulo = nomes_personalizados.get(
-                  pasta.name,
-                  pasta.name.replace("-", " ").replace("_", " ").title()
+              titulo = extrair_title(arquivo_manual)
+
+              if not titulo:
+                  titulo = nome_fallback(pasta.name)
+                  print(
+                      f"::warning file={arquivo_manual.as_posix()}::"
+                      f"Arquivo sem tag <title>. Usando o nome da pasta no README: {titulo}"
+                  )
+
+              link = montar_link(pasta, arquivo_manual)
+
+              manuais.append({
+                  "titulo": titulo,
+                  "link": link,
+              })
+
+          manuais = sorted(manuais, key=lambda item: item["titulo"].casefold())
+
+          if manuais:
+              nova_lista = "\n".join(
+                  f"- [{manual['titulo']}]({manual['link']})"
+                  for manual in manuais
               )
-
-              # Se for index.html ou index.htm, o link pode ser direto para a pasta
-              if arquivo_manual.name.lower() in ["index.html", "index.htm"]:
-                  link = f"./{pasta.name}/"
-              else:
-                  link = f"./{pasta.name}/{arquivo_manual.name}"
-
-              manuais.append(f"- [{titulo}]({link})")
-
-          nova_lista = "\n".join(manuais)
+          else:
+              nova_lista = "_Nenhum manual encontrado._"
 
           conteudo = readme.read_text(encoding="utf-8")
 
           if inicio not in conteudo or fim not in conteudo:
-              raise SystemExit("Marcadores MANUAIS:INICIO e MANUAIS:FIM não encontrados no README.md")
+              raise SystemExit(
+                  "Marcadores MANUAIS:INICIO e MANUAIS:FIM não encontrados no README.md"
+              )
 
           novo_conteudo = re.sub(
               rf"{re.escape(inicio)}.*?{re.escape(fim)}",
@@ -106,12 +173,18 @@ jobs:
           readme.write_text(novo_conteudo, encoding="utf-8")
           PY
 
+      - name: Mostrar alteração no Pull Request
+        if: github.event_name == 'pull_request'
+        run: |
+          git diff README.md || true
+
       - name: Salvar alteração no README
+        if: github.event_name != 'pull_request'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          if git diff --quiet; then
+          if git diff --quiet README.md; then
             echo "Nenhuma alteração no README."
           else
             git add README.md
