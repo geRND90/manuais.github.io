@@ -32,6 +32,8 @@ jobs:
           repo = Path(".")
           readme = repo / "README.md"
 
+          base_url = "https://gernd90.github.io/manuais.github.io/"
+
           inicio = "<!-- MANUAIS:INICIO -->"
           fim = "<!-- MANUAIS:FIM -->"
 
@@ -84,7 +86,7 @@ jobs:
           def limpar_titulo(titulo):
               titulo = re.sub(r"\s+", " ", titulo).strip()
 
-              # Remove tudo que vier depois de separadores como:
+              # Remove tudo que vier depois de:
               # " — ", " – " ou " - "
               titulo = re.split(r"\s+[—–-]\s+", titulo, maxsplit=1)[0].strip()
 
@@ -95,12 +97,15 @@ jobs:
 
           def montar_link(pasta, arquivo_manual):
               nome_arquivo = arquivo_manual.name.lower()
+              pasta_url = quote(pasta.name)
 
+              # Se for index.html ou index.htm, aponta para a pasta publicada no GitHub Pages
               if nome_arquivo in ["index.html", "index.htm"]:
-                  return f"./{quote(pasta.name)}/"
+                  return f"{base_url}{pasta_url}/"
 
-              caminho = f"{pasta.name}/{arquivo_manual.name}"
-              return f"./{quote(caminho, safe='/')}"
+              # Se for outro arquivo .html ou .htm, aponta diretamente para o arquivo
+              arquivo_url = quote(arquivo_manual.name)
+              return f"{base_url}{pasta_url}/{arquivo_url}"
 
           manuais = []
 
