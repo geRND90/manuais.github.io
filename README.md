@@ -5,7 +5,7 @@ Repositório dedicado aos manuais das integrações do **MeusCorreios**.
 ## 📘 Manuais disponíveis
 
 <!-- MANUAIS:INICIO -->
-- [Integração MeusCorreios x Jetcommerce](./integrJetcom/)
+- [Integração JetCommerce x MeusCorreios — Manual de Configuração](./integrJetcom/)
 - [Integração MeusCorreios x Shopify](./integrShopifyG/)
-- [Guia de Suporte MeusCorreios Chatbot](./meuscorreios-chatbot/)
+- [MeusCorreios Chatbot — Guia de Suporte](./meuscorreios-chatbot/)
 <!-- MANUAIS:FIM -->
