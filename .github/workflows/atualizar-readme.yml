@@ -42,13 +42,16 @@ jobs:
           inicio = "<!-- MANUAIS:INICIO -->"
           fim = "<!-- MANUAIS:FIM -->"
 
-          ignorar = {
+          # Pastas que não devem virar link no README
+          pastas_ignoradas = {
               ".git",
               ".github",
+              "templates",
           }
-          
+
+          # Arquivos específicos que também devem ser ignorados
           arquivos_ignorados = { 
-              Path("templates/manual-padrao.html"), 
+              "templates/manual-padrao.html", 
           }
 
           class TitleParser(HTMLParser):
