@@ -187,9 +187,17 @@ nav.navbar.manual-navbar,
 }
 
 .manual-sidebar-column {
-    flex: 0 0 var(--manual-sidebar-width) !important;
-    max-width: var(--manual-sidebar-width) !important;
-    width: var(--manual-sidebar-width) !important;
+    flex: 0 0 230px !important;
+    width: 230px !important;
+    min-width: 230px !important;
+    max-width: 230px !important;
+
+    position: sticky !important;
+    top: 4.5rem !important;
+    align-self: flex-start !important;
+
+    height: calc(100vh - 5.5rem);
+    overflow-y: auto;
 }
 
 .manual-content-column {
