@@ -1,0 +1,216 @@
+/* =========================================================
+   Manual Padrão — MeusCorreios
+   Base visual para manuais HTML usando Bulma
+   Usar junto com:
+   https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css
+   https://gernd90.github.io/manuais.github.io/templates/manual-padrao.html
+   ========================================================= */
+
+/* Força modo claro, mesmo quando o sistema está em modo escuro */
+:root {
+    color-scheme: light;
+
+    --bulma-scheme-main: #ffffff;
+    --bulma-scheme-main-bis: #fafafa;
+    --bulma-text: #363636;
+    --bulma-text-strong: #222222;
+    --bulma-background: #f5f5f5;
+    --bulma-menu-item-color: #363636;
+    --bulma-menu-item-background-color: transparent;
+    --bulma-menu-item-hover-color: #363636;
+    --bulma-menu-item-hover-background-color: #f5f5f5;
+    --bulma-menu-item-active-color: #363636;
+    --bulma-menu-item-active-background-color: #e8e8e8;
+    --bulma-table-head-background-color: #f5f5f5;
+    --bulma-table-head-cell-color: #363636;
+    --bulma-navbar-background-color: #ffffff;
+    --bulma-navbar-item-color: #4a4a4a;
+    --bulma-border: #dbdbdb;
+
+    --manual-bg: #fafafa;
+    --manual-text: #363636;
+    --manual-border: #dbdbdb;
+    --manual-blue: #3273dc;
+    --manual-info-bg: #dbeafe;
+    --manual-info-border: #bdd4f3;
+    --manual-user-bg: #e9fbe6;
+    --manual-user-border: #c3e6c0;
+    --manual-chat-bg: #ece5dd;
+    --manual-muted: #999999;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--manual-bg);
+    color: var(--manual-text);
+    font-size: 16px;
+    padding-bottom: 4rem;
+}
+
+/* Ajuste de escala de fonte usado nos manuais */
+.is-size-7 {
+    font-size: 0.875rem !important;
+}
+
+.is-size-6 {
+    font-size: 1rem !important;
+}
+
+/* Navbar fixa superior */
+nav.navbar,
+.manual-navbar {
+    border-bottom: 1px solid var(--manual-border);
+}
+
+.manual-page-offset {
+    padding-top: 3.5rem;
+}
+
+/* Estrutura geral */
+.manual-sidebar-column {
+    min-width: 190px;
+}
+
+.manual-content-column {
+    min-width: 0;
+}
+
+.section {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.section-anchor {
+    scroll-margin-top: 4rem;
+}
+
+/* Menu lateral fixo */
+aside.menu,
+.manual-sidebar {
+    font-size: 0.875rem;
+}
+
+.manual-sidebar {
+    position: sticky;
+    top: 4.5rem;
+    max-height: calc(100vh - 5.5rem);
+    overflow-y: auto;
+}
+
+.manual-sidebar .menu-list a.is-active,
+.manual-sidebar .menu-list a.active {
+    background-color: var(--bulma-menu-item-active-background-color);
+    color: var(--bulma-menu-item-active-color);
+    font-weight: 700;
+}
+
+/* Tabelas e listas */
+.table td,
+.table th {
+    vertical-align: middle;
+}
+
+.content ul li,
+.content ol li {
+    margin-bottom: 0.3rem;
+}
+
+.tag.is-mono {
+    font-family: monospace;
+}
+
+/* Blocos de destaque */
+.manual-highlight {
+    border-left: 4px solid var(--manual-blue);
+}
+
+.manual-note {
+    border-left: 4px solid var(--manual-blue);
+}
+
+/* Simulação de conversa/chat */
+.chat-box {
+    background: var(--manual-chat-bg);
+    border-radius: 8px;
+    padding: 1rem;
+    max-width: 400px;
+}
+
+.chat-box.is-wide {
+    max-width: 420px;
+}
+
+.chat-row {
+    margin-bottom: 0.6rem;
+}
+
+.chat-row.right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.chat-label {
+    font-size: 0.7rem;
+    color: var(--manual-muted);
+    margin-bottom: 0.15rem;
+}
+
+.chat-label.right {
+    text-align: right;
+}
+
+.chat-bubble {
+    background: var(--manual-info-bg);
+    border: 1px solid var(--manual-info-border);
+    border-radius: 0 10px 10px 10px;
+    padding: 0.6rem 0.85rem;
+    display: inline-block;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    white-space: pre-line;
+    max-width: 340px;
+}
+
+.chat-bubble.is-user {
+    background: var(--manual-user-bg);
+    border-color: var(--manual-user-border);
+    border-radius: 10px 0 10px 10px;
+}
+
+/* Mídias usadas em manuais com imagens, GIFs ou vídeos */
+.manual-image,
+.manual-video {
+    max-width: 100%;
+    border: 1px solid var(--manual-border);
+    border-radius: 8px;
+    display: block;
+}
+
+.manual-video {
+    background: #000000;
+}
+
+/* Rodapé */
+.manual-footer {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+/* Responsivo */
+@media screen and (max-width: 768px) {
+    .manual-page-offset {
+        padding-top: 3rem;
+    }
+
+    .chat-box {
+        max-width: 100%;
+    }
+
+    .chat-bubble {
+        max-width: 100%;
+    }
+}
