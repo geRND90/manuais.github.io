@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Nome do Manual</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css" />
+    <link rel="stylesheet" href="https://gernd90.github.io/manuais.github.io/assets/css/manual-padrao.css" />
+	
+	<style>
+	
+		.is-size-7 {
+            font-size: 0.875rem !important;
+        }
+
+        .is-size-6 {
+            font-size: 1rem !important;
+        }
+
+        .section {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+
+        .section-anchor {
+            scroll-margin-top: 4rem;
+        }
+
+        nav.navbar {
+            border-bottom: 1px solid #dbdbdb;
+        }
+
+        .tag.is-mono {
+            font-family: monospace;
+        }
+
+        .table td,
+        .table th {
+            vertical-align: middle;
+        }
+        		
+	</style>
+	
+</head>
+
+<body>
+
+	<!-- NAVBAR -->
+    <nav class="navbar is-white is-fixed-top manual-navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <span class="navbar-item has-text-weight-semibold is-size-6">
+                📘 Nome do Manual
+            </span>
+        </div>
+
+        <div class="navbar-menu is-active">
+            <div class="navbar-end is-hidden-mobile">
+                <a class="navbar-item is-size-7" href="#sobre">Sobre</a>
+                <a class="navbar-item is-size-7" href="#requisitos">Pre-Requisitos</a>
+				<a class="navbar-item is-size-7" href="#configuracao">Configuração</a>
+				<a class="navbar-item is-size-7" href="#prepostagem">Gerar Pré Postagem</a>
+                <a class="navbar-item is-size-7" href="#erros">Erros</a>
+                <a class="navbar-item is-size-7" href="#faq">FAQ</a>
+            </div>
+        </div>
+    </nav>
+
+    <div style="padding-top: 3.5rem;">
+        <section class="section">
+            <div class="container">
+                <div class="columns">
+
+                    <!-- SIDEBAR -->
+                    <div class="column is-narrow is-hidden-mobile manual-sidebar-column">
+                        <aside class="menu" style="position:sticky; top:4.5rem; font-size:0.82rem;">
+                            <p class="menu-label">Navegação</p>
+                            <ul class="menu-list">
+                                <li><a href="#sobre">Sobre este guia</a></li>
+                                <li><a href="#requisitos">Pré-Requisitos</a></li>
+                                <li>
+                                    <a href="#configuracao">Configuração</a>
+                                    <ul>
+                                        <li><a href="#passo-1">1. Primeiro passo</a></li>
+                                        <li><a href="#passo-2">2. Segundo passo</a></li>
+                                    </ul>
+                                </li>
+								<li>
+                                    <a href="#prepostagem">Gerar Pre Postagem</a>
+                                    <ul>
+                                        <li><a href="#pre-1">1. Primeiro passo</a></li>
+                                        <li><a href="#pre-2">2. Segundo passo</a></li>
+                                        <li><a href="#pre-3">3. Terceiro passo</a></li>
+                                    </ul>
+                                </li>
+								<li><a href="#erros">Referência de erros</a></li>
+                                <li><a href="#limitacoes">Limitações</a></li>
+                                <li><a href="#faq">FAQ de suporte</a></li>
+                            </ul>
+                        </aside>
+                    </div>
+
+                    <!-- CONTENT -->
+                    <main class="column manual-content-column">
+
+                        <!-- SOBRE -->
+                        <div id="sobre" class="section-anchor mb-5">
+                            <h1 class="title is-4">Nome do Manual - Guia IA</h1>
+                            <p class="block">
+                                Escreva aqui o objetivo do manual e uma descrição curta sobre o que será explicado.
+                            </p>
+
+                            <div class="notification is-light manual-highlight">
+                                Use este bloco para explicar uma informação importante logo no início do manual.
+                            </div>
+                        </div>
+
+                        <hr />
+						
+						<!-- REQUISITOS -->
+                        <div id="requisitos" class="section-anchor mb-5">
+                            <h2 class="title is-5">Pré-requisitos</h2>
+
+                            <ul class="content is-size-7">
+                                <li>Pré-requisito 1.</li>
+                                <li>Pré-requisito 2.</li>
+                                <li>Pré-requisito 3.</li>
+                            </ul>
+                        </div>
+
+                        <hr />
+
+                        <!-- CONFIGURAÇÃO -->
+                        <div id="configuracao" class="section-anchor mb-5">
+                            <h2 class="title is-5">Configuração</h2>
+
+                            <!-- PASSO 1 -->
+                            <div id="passo-1" class="section-anchor mb-5">
+                                <h3 class="title is-6">1. Primeiro passo</h3>
+
+                                <p class="is-size-7 block">
+                                    Sempre vai ser gerar as permissões na plataforma do Cliente.
+                                </p>
+
+                                <article class="message is-info is-size-7">
+                                    <div class="message-body">
+                                        Use mensagens informativas para dicas importantes.
+                                    </div>
+                                </article>
+
+                                <!-- Exemplo de imagem/GIF -->
+                                <!--
+                                <img class="manual-image" src="assets/img/exemplo.gif" alt="Descrição da imagem">
+                                -->
+                            </div>
+
+                            <!-- PASSO 2 -->
+                            <div id="passo-2" class="section-anchor mb-5">
+                                <h3 class="title is-6">2. Segundo passo</h3>
+
+                                <p class="is-size-7 block">
+                                    Sempre vai ser o processo de configuração no MeusCorreios.
+                                </p>
+								
+								<article class="message is-info is-size-7">
+                                    <div class="message-body">
+                                        Use mensagens informativas para dicas importantes.
+                                    </div>
+                                </article>
+
+                                <!-- Exemplo de imagem/GIF -->
+                                <!--
+                                <img class="manual-image" src="assets/img/exemplo.gif" alt="Descrição da imagem">
+                                -->
+								
+                            </div>
+
+                        <hr />
+
+                        <!-- Gerar Pre Postagem -->
+                        <div id="prepostagem" class="section-anchor mb-5">
+                            <h2 class="title is-5">Gerar Pre Postagem</h2>
+
+                            <!-- PASSO 1 -->
+                            <div id="pre-1" class="section-anchor mb-5">
+                                <h3 class="title is-6">1. Primeiro passo</h3>
+
+                                <p class="is-size-7 block">
+                                    Explique como acessar o menu de pre postagem.
+                                </p>
+								
+								<!-- Exemplo de imagem/GIF -->
+                                <!--
+                                <img class="manual-image" src="assets/img/exemplo.gif" alt="Descrição da imagem">
+                                -->
+                            </div>
+
+                            <!-- PASSO 2 -->
+                            <div id="pre-2" class="section-anchor mb-5">
+                                <h3 class="title is-6">2. Segundo passo</h3>
+
+                                <p class="is-size-7 block">
+                                    Mostrando a tela da integração e o que cada campo significa.
+                                </p>
+
+                                <table class="table is-fullwidth is-bordered is-size-7">
+                                    <thead>
+                                        <tr>
+                                            <th>Campo</th>
+                                            <th>Obrigatório</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Campo 1</td>
+                                            <td>O que o campo 1 faz</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Campo 2</td>
+                                            <td>O que o campo 2 faz</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- PASSO 3 -->
+                            <div id="pre-3" class="section-anchor mb-5">
+                                <h3 class="title is-6">3. Terceiro passo</h3>
+
+                                <p class="is-size-7 block">
+                                    Explique o terceiro passo do processo pode conter imagens das telas de sem etiqueta - sem serviço.
+                                </p>
+								
+								<!-- Exemplo de imagem/GIF -->
+                                <!--
+                                <img class="manual-image" src="assets/img/exemplo.gif" alt="Descrição da imagem">
+                                -->
+
+                                <article class="message is-warning is-size-7">
+                                    <div class="message-body">
+                                        Use mensagens de aviso para erros comuns ou cuidados necessários.
+                                    </div>
+                                </article>
+                            </div>
+                        </div>
+
+                        <hr />                        
+
+                        <!-- ERROS -->
+                        <div id="erros" class="section-anchor mb-5">
+                            <h2 class="title is-5">Referência de erros</h2>
+                            <p class="is-size-7 mb-3">
+                                O que o sistema exibe, o que significa e como orientar o cliente.
+                            </p>
+
+                            <table class="table is-fullwidth is-bordered is-size-7">
+                                <thead>
+                                    <tr>
+                                        <th>Mensagem / Sintoma</th>
+                                        <th>Causa provável</th>
+                                        <th>Ação de suporte</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><em>Mensagem de erro exibida ao cliente.</em></td>
+                                        <td>Explique a causa provável.</td>
+                                        <td>Explique o que o suporte deve fazer.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <hr />
+
+                        <!-- LIMITAÇÕES -->
+                        <div id="limitacoes" class="section-anchor mb-5">
+                            <h2 class="title is-5">Limitações</h2>
+
+                            <ul class="content is-size-7">
+                                <li><strong>Limitação 1:</strong> explique o que não é possível fazer.</li>
+                                <li><strong>Limitação 2:</strong> explique outro ponto de atenção.</li>
+                            </ul>
+                        </div>
+
+                        <hr />
+
+                        <!-- FAQ -->
+                        <div id="faq" class="section-anchor mb-5">
+                            <h2 class="title is-5">FAQ de suporte</h2>
+                            <p class="is-size-7 has-text-grey mb-3">
+                                Dúvidas comuns recebidas pelo suporte e o que responder.
+                            </p>
+
+                            <div class="content is-size-7">
+                                <p>
+                                    <strong>Pergunta comum do cliente ou suporte?</strong><br />
+                                    Resposta recomendada.
+                                </p>
+
+                                <p>
+                                    <strong>Outra dúvida comum?</strong><br />
+                                    Resposta recomendada.
+                                </p>
+                            </div>
+                        </div>
+
+                    </main>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer class="footer manual-footer">
+        <div class="content has-text-centered is-size-7 has-text-grey">
+            Nome do Manual - Guia IA
+        </div>
+    </footer>
+
+</body>
+
+</html>
