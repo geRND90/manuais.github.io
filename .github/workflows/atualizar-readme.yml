@@ -212,6 +212,6 @@ jobs:
             echo "Nenhuma alteração no README."
           else
             git add README.md
-            git commit -m "Atualiza lista de manuais no README [skip ci]"
+            git commit -m "Atualiza lista de manuais no README"
             git push
           fi
