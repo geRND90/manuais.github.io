@@ -9,7 +9,6 @@ Repositório dedicado aos manuais das integrações do **MeusCorreios**.
 - [Integração Shopify x MeusCorreios](https://gernd90.github.io/manuais.github.io/integrShopifyG/)
 - [Integração Tray x MeusCorreios](https://gernd90.github.io/manuais.github.io/integrTray/)
 - [MeusCorreios Chatbot](https://gernd90.github.io/manuais.github.io/meusCorreiosChatbot/)
-- [Test Github Actions](https://gernd90.github.io/manuais.github.io/test/)
 <!-- MANUAIS:FIM -->
 
 ## CI Pipeline
