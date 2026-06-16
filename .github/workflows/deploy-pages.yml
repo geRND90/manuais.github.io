@@ -51,6 +51,7 @@ jobs:
               ".git",
               ".github",
               "_site",
+              "templates",
           }
 
           class TitleParser(HTMLParser):
