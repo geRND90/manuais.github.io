@@ -4,13 +4,9 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - "README.md"
   pull_request:
     branches:
       - main
-    paths-ignore:
-      - "README.md"
   workflow_dispatch:
 
 permissions:
@@ -50,8 +46,8 @@ jobs:
           }
 
           # Arquivos específicos que também devem ser ignorados
-          arquivos_ignorados = { 
-              "templates/manual-padrao.html", 
+          arquivos_ignorados = {
+              "templates/manual-padrao.html",
           }
 
           class TitleParser(HTMLParser):
@@ -98,63 +94,87 @@ jobs:
           def limpar_titulo(titulo):
               titulo = re.sub(r"\s+", " ", titulo).strip()
 
-              # Remove tudo que vier depois de:
-              # " — ", " – " ou " - "
-              titulo = re.split(r"\s+[—–-]\s+", titulo, maxsplit=1)[0].strip()
+              # Remove tudo que vier depois de separadores como:
+              # " — ", " – ", " - ", "—" ou "–"
+              titulo = re.split(
+                  r"\s+[—–-]\s+|\s*[—–]\s*",
+                  titulo,
+                  maxsplit=1
+              )[0].strip()
 
               return titulo
 
           def nome_fallback(nome_pasta):
               return nome_pasta.replace("-", " ").replace("_", " ").title()
 
-          def montar_link(pasta, arquivo_manual):
-              nome_arquivo = arquivo_manual.name.lower()
-              pasta_url = quote(pasta.name)
+          def caminho_relativo_normalizado(caminho):
+              return caminho.relative_to(repo).as_posix().lower()
 
-              # Se for index.html ou index.htm, aponta para a pasta publicada no GitHub Pages
-              if nome_arquivo in ["index.html", "index.htm"]:
-                  return f"{base_url}{pasta_url}/"
+          def arquivo_esta_ignorado(caminho):
+              caminho_relativo = caminho_relativo_normalizado(caminho)
 
-              # Se for outro arquivo .html ou .htm, aponta diretamente para o arquivo
-              arquivo_url = quote(arquivo_manual.name)
-              return f"{base_url}{pasta_url}/{arquivo_url}"
+              if caminho_relativo in arquivos_ignorados:
+                  return True
+
+              partes = caminho_relativo.split("/")
+
+              for pasta in pastas_ignoradas:
+                  if pasta.lower() in partes:
+                      return True
+
+              return False
+
+          def montar_link(arquivo_manual):
+              caminho_relativo = arquivo_manual.relative_to(repo)
+              caminho_url = quote(caminho_relativo.as_posix(), safe="/")
+              return f"{base_url}{caminho_url}"
+
+          def encontrar_arquivo_manual(pasta):
+              # Primeiro procura index.html ou index.htm
+              for nome_arquivo in ["index.html", "index.htm"]:
+                  caminho = pasta / nome_arquivo
+
+                  if not caminho.exists() or not caminho.is_file():
+                      continue
+
+                  if arquivo_esta_ignorado(caminho):
+                      continue
+
+                  return caminho
+
+              # Se não encontrar index, procura qualquer .html ou .htm dentro da pasta
+              arquivos_html = sorted(
+                  [
+                      arquivo
+                      for arquivo in pasta.iterdir()
+                      if arquivo.is_file()
+                      and arquivo.suffix.lower() in [".html", ".htm"]
+                      and not arquivo_esta_ignorado(arquivo)
+                  ],
+                  key=lambda arquivo: arquivo.name.lower()
+              )
+
+              if not arquivos_html:
+                  return None
+
+              return arquivos_html[0]
 
           manuais = []
 
-          for pasta in sorted(repo.iterdir()):
+          for pasta in sorted(repo.iterdir(), key=lambda item: item.name.lower()):
               if not pasta.is_dir():
                   continue
 
-              if pasta.name in ignorar:
+              if pasta.name.lower() in pastas_ignoradas:
                   continue
 
               if pasta.name.startswith("."):
                   continue
 
-              arquivo_manual = None
+              arquivo_manual = encontrar_arquivo_manual(pasta)
 
-              # Primeiro procura index.html ou index.htm
-              for nome_arquivo in ["index.html", "index.htm"]:
-                  caminho = pasta / nome_arquivo
-                  if caminho.exists() and caminho.is_file():
-                      arquivo_manual = caminho
-                      break
-
-              # Se não encontrar index, procura qualquer .html ou .htm dentro da pasta
               if arquivo_manual is None:
-                  arquivos_html = sorted(
-                      [
-                          arquivo
-                          for arquivo in pasta.iterdir()
-                          if arquivo.is_file() and arquivo.suffix.lower() in [".html", ".htm"]
-                      ],
-                      key=lambda arquivo: arquivo.name.lower()
-                  )
-
-                  if not arquivos_html:
-                      continue
-
-                  arquivo_manual = arquivos_html[0]
+                  continue
 
               titulo = extrair_title(arquivo_manual)
 
@@ -174,7 +194,7 @@ jobs:
                           f"Título ajustado de '{titulo_original}' para '{titulo}'"
                       )
 
-              link = montar_link(pasta, arquivo_manual)
+              link = montar_link(arquivo_manual)
 
               manuais.append({
                   "titulo": titulo,
