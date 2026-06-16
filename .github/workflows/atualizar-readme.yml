@@ -6,13 +6,11 @@ on:
       - main
     paths-ignore:
       - "README.md"
-      - "templates/manual-padrao.html"
   pull_request:
     branches:
       - main
     paths-ignore:
       - "README.md"
-      - "templates/manual-padrao.html"
   workflow_dispatch:
 
 permissions:
@@ -47,6 +45,10 @@ jobs:
           ignorar = {
               ".git",
               ".github",
+          }
+          
+          arquivos_ignorados = { 
+              Path("templates/manual-padrao.html"), 
           }
 
           class TitleParser(HTMLParser):
