@@ -9,5 +9,6 @@ Repositório dedicado aos manuais das integrações do **MeusCorreios**.
 - [Integração Shopify x MeusCorreios](https://gernd90.github.io/manuais.github.io/integrShopifyG/)
 - [Integração Tray x MeusCorreios](https://gernd90.github.io/manuais.github.io/integrTray/)
 - [MeusCorreios Chatbot](https://gernd90.github.io/manuais.github.io/meusCorreiosChatbot/)
+- [Nome do Manual](https://gernd90.github.io/manuais.github.io/templates/manual-padrao.html)
 <!-- MANUAIS:FIM -->
 
